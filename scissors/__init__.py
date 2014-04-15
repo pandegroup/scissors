@@ -124,8 +124,8 @@ class SCISSORS(object):
             available dimensions will be used.
         """
         vectors = self.get_vectors(ip, max_dim)
-        return self.vector_tanimoto(vectors, vectors, self_overlap,
-                                    self_overlap)
+        return self.vector_tanimotos(vectors, vectors, self_overlap,
+                                     self_overlap)
 
     @staticmethod
     def get_inner_products_from_tanimotos(tanimotos):
@@ -138,10 +138,10 @@ class SCISSORS(object):
         tanimotos : array_like
             Tanimotos between library molecules and basis set molecules.
         """
-        return (2*tanimotos)/(1+tanimotos)
+        return (2 * tanimotos) / (1 + tanimotos)
 
     @staticmethod
-    def vector_tanimoto(a, b, a_overlap=None, b_overlap=None):
+    def vector_tanimotos(a, b, a_overlap=None, b_overlap=None):
         """
         Calculate Tanimoto similarity coefficients for vectors.
 
@@ -150,8 +150,8 @@ class SCISSORS(object):
         a, b : array_like
             Vectors between which to calculate similarity (in rows).
         a_overlap, b_overlap : array_like or None
-            Self-overlap values for vectors. If None, squared vector norms
-             will be used.
+            Self-overlap values for vectors. If None, inner products
+            between vectors will be used.
 
         Returns
         -------
