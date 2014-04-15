@@ -54,8 +54,12 @@ class SCISSORS(object):
             sort = np.argsort(e_vals)[::-1]
             dim = np.count_nonzero(e_vals > 0)
 
+        # reduce to maximum allowed dimensionality
+        e_vals = e_vals[sort][:dim]
+        e_vecs = e_vecs[:, sort][:, :dim]
+
         # get diagonal matrix of (eigenvalues)^(-0.5)
-        # take absolute value of eigenvalues to allow negative dimensions
+        # use abs in case of imaginary dimensions
         D = np.diag(np.reciprocal(np.sqrt(np.fabs(e_vals))))
         D_inv = np.diag(np.sqrt(np.fabs(e_vals)))
 

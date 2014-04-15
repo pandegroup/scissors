@@ -30,6 +30,8 @@ class TestSCISSORS(unittest.TestCase):
         basis = np.random.randint(self.n_mols, size=200)
         s = SCISSORS(self.data['ab_overlap'][basis][:, basis])
         tanimotos = s.get_tanimotos(self.data['ab_overlap'][:, basis])
+        import IPython
+        IPython.embed()
         assert_scissors(tanimotos, self.data['tanimotos'])
 
     def test_scissors_tanimotos_with_overlaps(self):
