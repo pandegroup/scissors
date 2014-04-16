@@ -1,11 +1,14 @@
 """
-SCISSORS module
+SCISSORS Calculates Interpolated Shape Signatures Over Rapid Overlay of
+Chemical Structures (ROCS) Space.
 
 Rewrites of SCISSORS methods originally written by Imran Haque, with some
 modifications and additions by Steven Kearnes.
 
-See J. Chem. Inf. Model. 2010, 50, 1075-1088 and
-    J. Chem. Inf. Model. 2011, 51, 2248-2253
+Sources:
+* J. Chem. Inf. Model. 2010, 50, 1075-1088
+* J. Chem. Inf. Model. 2011, 51, 2248-2253
+* J. Chem. Inf. Model. 2014, 54, 5-15
 
 Steven Kearnes
 Pande Lab, Stanford University
