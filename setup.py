@@ -10,7 +10,7 @@ def main():
         url='https://github.com/SimTk/scissors',
         description='SCISSORS Calculates Interpolated Shape Signatures over' +
                     'Rapid Overlay of Chemical Structures (ROCS) Space',
-        long_description=open('README.rst').read(),
+        long_description=open('README.md').read(),
         packages=find_packages(),
         install_requires=['numpy']
     )
