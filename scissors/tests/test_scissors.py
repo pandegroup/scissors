@@ -7,16 +7,16 @@ Pande Lab, Stanford University
 Copyright (c) 2012 Stanford University.
 """
 import numpy as np
-import os.path
+import os
 import unittest
 
 from scissors import SCISSORS
 
 
 def assert_scissors(a, b):
-    """Allow RMS error up to 25%."""
+    """Allow up to 10% RMS error."""
     rmse = np.sqrt(np.square(a-b).sum()/float(a.size))
-    assert rmse <= 0.25, rmse
+    assert rmse <= 0.1, rmse
 
 
 class TestSCISSORS(unittest.TestCase):
