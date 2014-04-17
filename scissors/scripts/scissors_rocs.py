@@ -11,6 +11,7 @@ Copyright (c) 2014 Stanford University.
 """
 import argparse
 import h5py
+
 from scissors import SCISSORS
 
 
