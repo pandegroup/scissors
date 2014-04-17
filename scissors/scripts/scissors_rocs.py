@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-scissors.py
+scissors_rocs.py
 
 Generate SCISSORS vectors from precalculated ROCS similarities.
 
