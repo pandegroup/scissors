@@ -35,7 +35,6 @@ def read_generator(filename):
         raise IOError("Cannot read '{}'.".format(filename))
     for mol in ifs.GetOEMols():
         mol = OEMol(mol)
-        OE3DToInternalStereo(mol)
         yield mol
     ifs.close()
 

@@ -10,14 +10,16 @@ Pande Lab, Stanford University
 Copyright (c) 2014 Stanford University.
 """
 import argparse
+import cPickle
 import h5py
 
 from scissors import SCISSORS
 
 
 parser = argparse.ArgumentParser(description="")
-parser.add_argument("--bb", help="Basis vs. basis ROCS comparisons.")
-parser.add_argument("--lb", help="Library vs. basis ROCS comparisons.")
+parser.add_argument("-bb", "--bb", help="Basis vs. basis ROCS comparisons.")
+parser.add_argument("-lb", "--lb", help="Library vs. basis ROCS comparisons.")
+parser.add_argument("-y", "--y", help="Pickle containing compound labels.")
 parser.add_argument("-o", "--output", required=True, help="Output filename.")
 parser.add_argument("-d", "--dim", type=int, default=None, required=False,
                     help="Maximum dimensionality of SCISSORS vectors.")
@@ -56,7 +58,7 @@ def load(filename, overlap):
     return shape_ip, color_ip
 
 
-def save(data, filename, options=None):
+def save(data, filename, attrs=None, options=None):
     """
     Write data to HDF5.
 
@@ -73,6 +75,14 @@ def save(data, filename, options=None):
         options = {'chunks': True, 'fletcher32': True, 'shuffle': True,
                    'compression': 'gzip', 'compression_opts': 1}
     with h5py.File(filename, 'w') as f:
+        if attrs is not None:
+            for key, val in attrs.items():
+                if val is None:
+                    continue
+                try:
+                    f.attrs[key] = val
+                except RuntimeError:
+                    pass
         for key, val in data.items():
             f.create_dataset(key, data=val, **options)
 
@@ -80,8 +90,8 @@ def save(data, filename, options=None):
 def main():
 
     # load input data
-    shape_bb_ip, color_bb_ip = load(args.bb)
-    shape_lb_ip, color_lb_ip = load(args.lb)
+    shape_bb_ip, color_bb_ip = load(args.bb, args.overlap)
+    shape_lb_ip, color_lb_ip = load(args.lb, args.overlap)
 
     # setup dimensionality
     shape_dim = None
@@ -104,7 +114,11 @@ def main():
             'shape_projection_matrix': shape_s.get_projection_matrix(),
             'color_vectors': color_vectors,
             'color_projection_matrix': color_s.get_projection_matrix()}
-    save(data, args.output)
+    if args.y:
+        with open(args.y) as f:
+            y = cPickle.load(f)
+        data['y'] = y
+    save(data, args.output, attrs=vars(args))
 
 if __name__ == "__main__":
     main()
