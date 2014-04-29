@@ -38,6 +38,8 @@ class SCISSORS(object):
             bb_ip = self._center_kernel_matrix(bb_ip)
         self.bb_ip = bb_ip
         self.allow_imaginary = allow_imaginary
+        self.e_vals = None
+        self.e_vecs = None
         self.projection_matrix = None
         self.inverse_projection_matrix = None
 
@@ -70,6 +72,8 @@ class SCISSORS(object):
         p = np.asarray(np.asmatrix(D) * np.asmatrix(e_vecs).T)
         p_inv = np.asarray(np.asmatrix(e_vecs) * np.asmatrix(D_inv))
 
+        self.e_vals = e_vals
+        self.e_vecs = e_vecs
         self.projection_matrix = p
         self.inverse_projection_matrix = p_inv
 
@@ -80,6 +84,12 @@ class SCISSORS(object):
         if self.projection_matrix is None:
             self.get_projection_matrix()
         return self.projection_matrix.shape[0]
+
+    def get_eigenvalues(self):
+        """Return eigenvalues of retained eigenvectors."""
+        if self.e_vals is None:
+            self.get_projection_matrix()
+        return self.e_vals
 
     def get_vectors(self, ip, max_dim=None):
         """
@@ -99,7 +109,7 @@ class SCISSORS(object):
         vectors : array_like
             SCISSORS vectors for library molecules. Molecules are in rows.
         """
-        assert ip.shape[1] == self.bb_ip.shape[0]
+        assert ip.shape[1] == self.bb_ip.shape[0], (ip.shape, self.bb_ip.shape)
         if self.projection_matrix is None:
             self.get_projection_matrix()
         vectors = np.asarray(np.asmatrix(self.projection_matrix) *
