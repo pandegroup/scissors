@@ -30,6 +30,8 @@ parser.add_argument("--color-dim", type=int,
 parser.add_argument("--overlap", action="store_true",
                     help="Use actual pairwise overlaps as inner products " +
                          "instead of calculating from Tanimotos.")
+parser.add_argument("--transpose", action="store_true",
+                    help="Transpose lb to put library molecules in rows.")
 args = parser.parse_args()
 
 
@@ -92,6 +94,9 @@ def main():
     # load input data
     shape_bb_ip, color_bb_ip = load(args.bb, args.overlap)
     shape_lb_ip, color_lb_ip = load(args.lb, args.overlap)
+    if args.transpose:
+        shape_lb_ip = shape_lb_ip.T
+        color_lb_ip = color_lb_ip.T
 
     # setup dimensionality
     shape_dim = None
@@ -112,7 +117,9 @@ def main():
 
     data = {'shape_vectors': shape_vectors,
             'shape_projection_matrix': shape_s.get_projection_matrix(),
+            'shape_eigenvalues': shape_s.get_eigenvalues(),
             'color_vectors': color_vectors,
+            'color_eigenvalues': color_s.get_eigenvalues(),
             'color_projection_matrix': color_s.get_projection_matrix()}
     if args.y:
         with open(args.y) as f:
